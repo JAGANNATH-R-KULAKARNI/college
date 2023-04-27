@@ -1,9 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../Supabase";
 import Cookies from "js-cookie";
+import ModalUI from "./Modal";
+import React from "react";
 
 export default function Example(props) {
   const navigate = useNavigate();
+  const [curHospital, setCurHospital] = React.useState(false);
+  const [modal, setModal] = React.useState(false);
 
   async function requestHospital(em) {
     if (props.reason) {
@@ -34,6 +38,9 @@ export default function Example(props) {
 
   return (
     <ul role="list" className="divide-y divide-gray-100">
+      {modal && curHospital && (
+        <ModalUI setModal={setModal} data={curHospital} />
+      )}
       {props.hospitals &&
         props.hospitals.map((person) => (
           <li key={person.email} className="flex justify-between gap-x-6 py-5">
@@ -96,7 +103,22 @@ export default function Example(props) {
                         : "white",
                   }}
                   onClick={() => {
-                    requestHospital(person.email);
+                    if (
+                      props.requestedData[person.email] &&
+                      props.requestedData[person.email] == 0
+                    ) {
+                      requestHospital(person.email);
+                    } else if (!props.requestedData[person.email]) {
+                      requestHospital(person.email);
+                    }
+
+                    if (
+                      props.requestedData[person.email] &&
+                      props.requestedData[person.email] == 2
+                    ) {
+                      setCurHospital(person);
+                      setModal(true);
+                    }
                   }}
                 >
                   {props.requestedData[person.email] &&

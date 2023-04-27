@@ -1,8 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../Supabase";
 import Cookies from "js-cookie";
+import React from "react";
+import ModalUI from "./Modal";
 
 export default function Example(props) {
+  const [curUser, setCurUser] = React.useState(false);
+  const [modal, setModal] = React.useState(false);
+
   async function requestHospital(pn, status, hos) {
     const { data, error } = await supabase
       .from("requests")
@@ -21,6 +26,7 @@ export default function Example(props) {
 
   return (
     <ul role="list" className="divide-y divide-gray-100">
+      {modal && curUser && <ModalUI setModal={setModal} data={curUser} />}
       {props.requests &&
         props.requests.map((person) => (
           <li key={person.email} className="flex justify-between gap-x-6 py-5">
@@ -77,6 +83,10 @@ export default function Example(props) {
                   type="button"
                   class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
                   style={{ backgroundColor: "white", color: "black" }}
+                  onClick={() => {
+                    setCurUser(person);
+                    setModal(true);
+                  }}
                 >
                   Chat Now
                 </button>
