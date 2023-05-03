@@ -39,6 +39,90 @@ export default function UserUI() {
     }
   }
 
+  async function saveUserInfo(typ, val) {
+    let temp = null;
+
+    if (Cookies.get("patient-info"))
+      temp = JSON.parse(Cookies.get("patient-info"));
+
+    if (!temp) {
+      Cookies.set(
+        "patient-info",
+        JSON.stringify({
+          name: "",
+          age: 0,
+          gender: "",
+          pc: "",
+          phnum: "",
+          aoin: "",
+        })
+      );
+
+      temp = JSON.parse(
+        JSON.stringify({
+          name: "",
+          age: 0,
+          gender: "",
+          pc: "",
+          phnum: "",
+          aoin: "",
+        })
+      );
+
+      // console.log(temp);
+    }
+
+    if (typ == 1) {
+      Cookies.set(
+        "patient-info",
+        JSON.stringify({
+          ...temp,
+          name: val,
+        })
+      );
+    } else if (typ == 2) {
+      Cookies.set(
+        "patient-info",
+        JSON.stringify({
+          ...temp,
+          age: val,
+        })
+      );
+    } else if (typ == 3) {
+      Cookies.set(
+        "patient-info",
+        JSON.stringify({
+          ...temp,
+          gender: val,
+        })
+      );
+    } else if (typ == 4) {
+      Cookies.set(
+        "patient-info",
+        JSON.stringify({
+          ...temp,
+          pc: val,
+        })
+      );
+    } else if (typ == 5) {
+      Cookies.set(
+        "patient-info",
+        JSON.stringify({
+          ...temp,
+          phnum: val,
+        })
+      );
+    } else if (typ == 6) {
+      Cookies.set(
+        "patient-info",
+        JSON.stringify({
+          ...temp,
+          aoin: val,
+        })
+      );
+    }
+  }
+
   React.useEffect(() => {
     if (Cookies.get("phnumH")) {
       getHospitalDetails();
@@ -51,7 +135,7 @@ export default function UserUI() {
   return (
     <div style={{ marginTop: "-130px" }}>
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <div style={{ width: "40%" }}>
+        <div style={{ width: "85%" }}>
           <h1
             style={{
               fontSize: "40px",
@@ -112,17 +196,100 @@ export default function UserUI() {
           </div>
 
           <br />
-          {hospitals && requestedData ? (
-            <ChatsUI
-              hospitals={hospitals}
-              requestedData={requestedData}
-              getRequests={getRequests}
-              getHospitalDetails={getHospitalDetails}
-              reason={reason}
-            />
-          ) : (
-            <h1 style={{ textAlign: "center", color: "white" }}>Loading...</h1>
-          )}
+          <div
+            style={{ display: "flex", justifyContent: "center", width: "100%" }}
+          >
+            <div style={{ width: "45%" }}>
+              {hospitals && requestedData ? (
+                <ChatsUI
+                  hospitals={hospitals}
+                  requestedData={requestedData}
+                  getRequests={getRequests}
+                  getHospitalDetails={getHospitalDetails}
+                  reason={reason}
+                />
+              ) : (
+                <h1 style={{ textAlign: "center", color: "white" }}>
+                  Loading...
+                </h1>
+              )}
+            </div>
+            <div style={{ width: "10%" }}></div>
+            <div style={{ width: "45%", marginTop: "20px" }}>
+              <div class="mb-6">
+                <input
+                  type="text"
+                  id="name-of-p"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Skandan"
+                  required
+                  onChange={(e) => {
+                    saveUserInfo(1, e.target.value);
+                  }}
+                />
+              </div>
+              <div class="mb-6">
+                <input
+                  type="number"
+                  id="age-of-p"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="30"
+                  required
+                  onChange={(e) => {
+                    saveUserInfo(2, e.target.value);
+                  }}
+                />
+              </div>
+              <div class="mb-6">
+                <input
+                  type="text"
+                  id="gender-of-p"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Male"
+                  required
+                  onChange={(e) => {
+                    saveUserInfo(3, e.target.value);
+                  }}
+                />
+              </div>
+              <div class="mb-6">
+                <input
+                  type="text"
+                  id="pc-of-p"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Previous Complication Entry"
+                  required
+                  onChange={(e) => {
+                    saveUserInfo(4, e.target.value);
+                  }}
+                />
+              </div>
+              <div class="mb-6">
+                <input
+                  type="number"
+                  id="num-of-p"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Contact Number"
+                  required
+                  onChange={(e) => {
+                    saveUserInfo(5, e.target.value);
+                  }}
+                />
+              </div>
+              <div class="mb-6">
+                <input
+                  type="text"
+                  id="i-of-p"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Availability Of Insurance"
+                  required
+                  onChange={(e) => {
+                    saveUserInfo(6, e.target.value);
+                  }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
