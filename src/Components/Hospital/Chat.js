@@ -51,7 +51,7 @@ export default function Example(props) {
                 </p>
               </div>
             </div>
-            <div className="hidden sm:flex sm:flex-col sm:items-end">
+            <div className=" sm:flex sm:flex-col sm:items-end">
               {person.accept != 2 && person.accept != 3 && (
                 <div class="inline-flex rounded-md shadow-sm" role="group">
                   <button

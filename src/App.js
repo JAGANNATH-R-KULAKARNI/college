@@ -12,9 +12,11 @@ import OTPUI from "./Components/OTP/Otp";
 import HospitalUI from "./Components/Hospital/Hospital";
 import UserUI from "./Components/User/User";
 import LandingPageUI from "./Components/LandingPage";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 function App() {
   const [signedUp, setSignedUp] = React.useState(false);
+  const m1 = useMediaQuery("(min-width:600px)");
 
   return (
     <div className="bg-[#10B981]">
@@ -30,7 +32,7 @@ function App() {
         <Route path="/hospital" element={<HospitalUI />} />
         <Route path="/user" element={<UserUI />} />
       </Routes>
-      <div style={{ height: "198px" }}></div>
+      <div style={{ height: m1 ? "198px" : "300px" }}></div>
     </div>
   );
 }

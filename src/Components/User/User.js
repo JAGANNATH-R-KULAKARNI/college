@@ -3,12 +3,18 @@ import ChatsUI from "./Chats";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../Supabase";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 export default function UserUI() {
   const navigate = useNavigate();
   const [hospitals, setHospitals] = React.useState(null);
   const [requestedData, setRequestedData] = React.useState(null);
   const [reason, setReason] = React.useState(null);
+  const [fillForm, setFillForm] = React.useState(false);
+  const m1 = useMediaQuery("(min-width:600px)");
+  const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
   async function getHospitalDetails() {
     const { data, error } = await supabase.from("hospital").select("*");
@@ -138,14 +144,15 @@ export default function UserUI() {
         <div style={{ width: "85%" }}>
           <h1
             style={{
-              fontSize: "40px",
+              fontSize: m1 ? "40px" : "25px",
               fontWeight: 700,
               textAlign: "center",
               color: "white",
             }}
           >
             Available Hospitals{" "}
-            <span style={{ fontSize: "23px" }}>
+            {m1 ? null : <div style={{ height: "1px" }}></div>}
+            <span style={{ fontSize: m1 ? "23px" : "15px" }}>
               (+91 {Cookies.get("phnumH")})
             </span>
           </h1>
@@ -194,12 +201,111 @@ export default function UserUI() {
               </button>
             </div>
           </div>
-
+          {m1 ? null : (
+            <FormControlLabel
+              label="Fill the form"
+              style={{
+                color: "white",
+                fontWeight: 900,
+                marginTop: "10px",
+                marginLeft: "1px",
+              }}
+              control={
+                <Checkbox
+                  style={{ color: "white" }}
+                  checked={fillForm}
+                  onChange={(e) => {
+                    setFillForm(e.target.checked);
+                  }}
+                />
+              }
+            />
+          )}
           <br />
           <div
-            style={{ display: "flex", justifyContent: "center", width: "100%" }}
+            style={{
+              display: m1 ? "flex" : "block",
+              justifyContent: "center",
+              width: "100%",
+            }}
           >
-            <div style={{ width: "45%" }}>
+            {!m1 && fillForm ? (
+              <div style={{ width: m1 ? "45%" : "100%", marginTop: "20px" }}>
+                <div class="mb-6">
+                  <input
+                    type="text"
+                    id="name-of-p"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Skandan"
+                    required
+                    onChange={(e) => {
+                      saveUserInfo(1, e.target.value);
+                    }}
+                  />
+                </div>
+                <div class="mb-6">
+                  <input
+                    type="number"
+                    id="age-of-p"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="30"
+                    required
+                    onChange={(e) => {
+                      saveUserInfo(2, e.target.value);
+                    }}
+                  />
+                </div>
+                <div class="mb-6">
+                  <input
+                    type="text"
+                    id="gender-of-p"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Male"
+                    required
+                    onChange={(e) => {
+                      saveUserInfo(3, e.target.value);
+                    }}
+                  />
+                </div>
+                <div class="mb-6">
+                  <input
+                    type="text"
+                    id="pc-of-p"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Previous Complication Entry"
+                    required
+                    onChange={(e) => {
+                      saveUserInfo(4, e.target.value);
+                    }}
+                  />
+                </div>
+                <div class="mb-6">
+                  <input
+                    type="number"
+                    id="num-of-p"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Contact Number"
+                    required
+                    onChange={(e) => {
+                      saveUserInfo(5, e.target.value);
+                    }}
+                  />
+                </div>
+                <div class="mb-6">
+                  <input
+                    type="text"
+                    id="i-of-p"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Availability Of Insurance"
+                    required
+                    onChange={(e) => {
+                      saveUserInfo(6, e.target.value);
+                    }}
+                  />
+                </div>
+              </div>
+            ) : null}
+            <div style={{ width: m1 ? "45%" : "100%" }}>
               {hospitals && requestedData ? (
                 <ChatsUI
                   hospitals={hospitals}
@@ -215,80 +321,82 @@ export default function UserUI() {
               )}
             </div>
             <div style={{ width: "10%" }}></div>
-            <div style={{ width: "45%", marginTop: "20px" }}>
-              <div class="mb-6">
-                <input
-                  type="text"
-                  id="name-of-p"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Skandan"
-                  required
-                  onChange={(e) => {
-                    saveUserInfo(1, e.target.value);
-                  }}
-                />
+            {m1 ? (
+              <div style={{ width: m1 ? "45%" : "100%", marginTop: "20px" }}>
+                <div class="mb-6">
+                  <input
+                    type="text"
+                    id="name-of-p"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Skandan"
+                    required
+                    onChange={(e) => {
+                      saveUserInfo(1, e.target.value);
+                    }}
+                  />
+                </div>
+                <div class="mb-6">
+                  <input
+                    type="number"
+                    id="age-of-p"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="30"
+                    required
+                    onChange={(e) => {
+                      saveUserInfo(2, e.target.value);
+                    }}
+                  />
+                </div>
+                <div class="mb-6">
+                  <input
+                    type="text"
+                    id="gender-of-p"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Male"
+                    required
+                    onChange={(e) => {
+                      saveUserInfo(3, e.target.value);
+                    }}
+                  />
+                </div>
+                <div class="mb-6">
+                  <input
+                    type="text"
+                    id="pc-of-p"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Previous Complication Entry"
+                    required
+                    onChange={(e) => {
+                      saveUserInfo(4, e.target.value);
+                    }}
+                  />
+                </div>
+                <div class="mb-6">
+                  <input
+                    type="number"
+                    id="num-of-p"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Contact Number"
+                    required
+                    onChange={(e) => {
+                      saveUserInfo(5, e.target.value);
+                    }}
+                  />
+                </div>
+                <div class="mb-6">
+                  <input
+                    type="text"
+                    id="i-of-p"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Availability Of Insurance"
+                    required
+                    onChange={(e) => {
+                      saveUserInfo(6, e.target.value);
+                    }}
+                  />
+                </div>
               </div>
-              <div class="mb-6">
-                <input
-                  type="number"
-                  id="age-of-p"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="30"
-                  required
-                  onChange={(e) => {
-                    saveUserInfo(2, e.target.value);
-                  }}
-                />
-              </div>
-              <div class="mb-6">
-                <input
-                  type="text"
-                  id="gender-of-p"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Male"
-                  required
-                  onChange={(e) => {
-                    saveUserInfo(3, e.target.value);
-                  }}
-                />
-              </div>
-              <div class="mb-6">
-                <input
-                  type="text"
-                  id="pc-of-p"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Previous Complication Entry"
-                  required
-                  onChange={(e) => {
-                    saveUserInfo(4, e.target.value);
-                  }}
-                />
-              </div>
-              <div class="mb-6">
-                <input
-                  type="number"
-                  id="num-of-p"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Contact Number"
-                  required
-                  onChange={(e) => {
-                    saveUserInfo(5, e.target.value);
-                  }}
-                />
-              </div>
-              <div class="mb-6">
-                <input
-                  type="text"
-                  id="i-of-p"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Availability Of Insurance"
-                  required
-                  onChange={(e) => {
-                    saveUserInfo(6, e.target.value);
-                  }}
-                />
-              </div>
-            </div>
+            ) : null}
           </div>
         </div>
       </div>

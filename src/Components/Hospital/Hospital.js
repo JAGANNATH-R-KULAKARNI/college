@@ -8,11 +8,13 @@ import { supabase } from "../../Supabase";
 import Cookies from "js-cookie";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export default function Hospital() {
   const [hData, setHData] = React.useState(null);
   const [requests, setRequests] = React.useState(null);
   const navigate = useNavigate();
+  const m1 = useMediaQuery("(min-width:600px)");
 
   React.useEffect(() => {
     console.log("Email H");
@@ -62,7 +64,7 @@ export default function Hospital() {
       style={{
         backgroundColor: "#10B981",
         color: "white",
-        marginTop: "-200px",
+        marginTop: m1 ? "-200px" : "-250px",
       }}
     >
       <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start lg:gap-y-10">
@@ -99,7 +101,11 @@ export default function Hospital() {
               // src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png"
               src={hData.logo}
               alt=""
-              style={{ width: "100%", height: "auto" }}
+              style={{
+                width: "100%",
+                height: "auto",
+                marginTop: m1 ? "0px" : "-30px",
+              }}
             />
           )}
         </div>
@@ -114,6 +120,7 @@ export default function Hospital() {
                       fontSize: "25px",
                       fontWeight: 700,
                       marginBottom: "20px",
+                      marginTop: m1 ? "0px" : "-80px",
                     }}
                   >
                     Emergency Requests

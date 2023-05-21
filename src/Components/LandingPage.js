@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const navigation = [
   { name: "Product", href: "#" },
@@ -12,13 +13,14 @@ const navigation = [
 
 export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const m1 = useMediaQuery("(min-width:600px)");
   const navigate = useNavigate();
 
   return (
     <div
       className="bg-white"
       style={{
-        marginTop: "-200px",
+        marginTop: m1 ? "-200px" : "-150px",
         marginBottom: "-200px",
         backgroundColor: "#10B981",
       }}
@@ -39,7 +41,7 @@ export default function Example() {
               />
             </a>
           </div>
-          <div className="flex lg:hidden">
+          {/* <div className="flex lg:hidden">
             <button
               type="button"
               className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
@@ -48,7 +50,7 @@ export default function Example() {
               <span className="sr-only">Open main menu</span>
               <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>
-          </div>
+          </div> */}
         </nav>
         <Dialog
           as="div"
@@ -67,14 +69,14 @@ export default function Example() {
                   alt=""
                 />
               </a>
-              <button
+              {/* <button
                 type="button"
                 className="-m-2.5 rounded-md p-2.5 text-gray-700"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <span className="sr-only">Close menu</span>
                 <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-              </button>
+              </button> */}
             </div>
             <div className="mt-6 flow-root">
               <div className="-my-6 divide-y divide-gray-500/10">
